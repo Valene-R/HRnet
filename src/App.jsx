@@ -1,10 +1,9 @@
 function App() {
-
   return (
     <>
-      <h1>HRnet</h1>
+      <h1 className="text-3xl font-bold underline">HRnet</h1>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
