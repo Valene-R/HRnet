@@ -5,6 +5,7 @@ import { states } from '../data/states';
 import { departments } from '../data/departments';
 import InputField from '../components/InputField';
 import DropdownSelect from '../components/DropdownSelect';
+import Modal from '../components/Modal';
 
 /**
  * Page for creating a new employee
@@ -22,6 +23,9 @@ const CreateEmployee = () => {
     zipCode: '',
     department: 'Sales',
   });
+
+  // State to control the success modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   /**
    * Handle form field changes
@@ -51,7 +55,9 @@ const CreateEmployee = () => {
     const updatedEmployees = [...employeesArray, formData];
 
     localStorage.setItem('employees', JSON.stringify(updatedEmployees)); // Save updated list
-    alert('Employee Created!');
+
+    // Open success modal after form submission
+    setIsModalOpen(true);
   };
 
   return (
@@ -88,10 +94,26 @@ const CreateEmployee = () => {
 
         <button
           type="submit"
-          className="mt-4 cursor-pointer rounded border-1 bg-gray-100 px-4 py-2 text-black hover:bg-gray-200"
+          className="mt-4 cursor-pointer rounded border-1 bg-gray-100 px-4 py-2 text-black hover:bg-gray-200 focus:ring-1 focus:ring-black focus:outline-none"
         >
           Save
         </button>
+
+        {/* Success modal displayed after employee creation */}
+        <Modal
+          title="Success"
+          message={
+            <>
+              Employee{' '}
+              <strong className="text-2xl text-black">
+                {formData.firstName} {formData.lastName}
+              </strong>{' '}
+              has been created!
+            </>
+          }
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </form>
     </div>
   );
