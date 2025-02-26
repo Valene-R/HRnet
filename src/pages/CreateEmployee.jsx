@@ -9,10 +9,11 @@ import Modal from '../components/Modal';
 
 /**
  * Page for creating a new employee
- * @returns {JSX.Element} A form with multiple input fields to create an employee
+ * @returns {JSX.Element} A form with multiple fields (inputs and selects) to create an employee
  */
 const CreateEmployee = () => {
-  const [formData, setFormData] = useState({
+  // Initial values for the form fields
+  const initialFormData = {
     firstName: '',
     lastName: '',
     dateOfBirth: '',
@@ -22,7 +23,10 @@ const CreateEmployee = () => {
     state: 'Alabama',
     zipCode: '',
     department: 'Sales',
-  });
+  };
+
+  // State to store the form data
+  const [formData, setFormData] = useState(initialFormData);
 
   // State to control the success modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,7 +116,10 @@ const CreateEmployee = () => {
             </>
           }
           isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setFormData(initialFormData); // Reset the form fields when modal is closed
+          }}
         />
       </form>
     </div>
