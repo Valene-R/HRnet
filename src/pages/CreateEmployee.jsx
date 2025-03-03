@@ -120,6 +120,8 @@ const CreateEmployee = () => {
             setIsModalOpen(false);
             setFormData(initialFormData); // Reset the form fields when modal is closed
           }}
+          type="success"
+          showCloseIcon={true}
         />
       </form>
     </div>
