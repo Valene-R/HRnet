@@ -4,6 +4,7 @@ import { ROUTES } from '../router/routes';
 import SearchBar from '../components/SearchBar';
 import DataTable from '../components/DataTable';
 import ItemsPerPageSelect from '../components/ItemsPerPageSelect';
+import Pagination from '../components/Pagination';
 import { mockEmployees } from '../mockData/mockEmployees';
 import { formatDateForDisplay } from '../utils/format';
 
@@ -34,6 +35,7 @@ const formattedEmployees = mockEmployees.map((employee) => ({
 const EmployeeList = () => {
   const [search, setSearch] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Filter employees based on search input
   const filteredEmployees = useMemo(() => {
@@ -49,10 +51,15 @@ const EmployeeList = () => {
     );
   }, [search]);
 
+  // Calculate total pages
+  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+
   // Paginate the filtered employees
   const paginatedEmployees = useMemo(() => {
-    return filteredEmployees.slice(0, itemsPerPage);
-  }, [filteredEmployees, itemsPerPage]);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredEmployees.slice(startIndex, endIndex);
+  }, [filteredEmployees, itemsPerPage, currentPage]);
 
   return (
     <div className="mx-5 mt-10 text-center">
@@ -74,6 +81,15 @@ const EmployeeList = () => {
 
       {/* Employee data table */}
       <DataTable data={paginatedEmployees} columns={columns} noResultsMessage="No matching records found" />
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+        totalEntries={filteredEmployees.length}
+        totalUnfilteredEntries={formattedEmployees.length}
+        itemsPerPage={itemsPerPage}
+      />
 
       {/* Link back to home */}
       <Link to={ROUTES.home} className="text-violet-900 underline">
