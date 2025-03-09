@@ -55,7 +55,7 @@ const EmployeeList = () => {
       <SearchBar value={search} onChange={setSearch} />
 
       {/* Employee data table */}
-      <DataTable data={filteredEmployees} columns={columns} />
+      <DataTable data={filteredEmployees} columns={columns} noResultsMessage="No matching records found" />
 
       {/* Link back to home */}
       <Link to={ROUTES.home} className="text-violet-900 underline">
