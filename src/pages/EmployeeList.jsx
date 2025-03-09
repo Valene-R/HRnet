@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../router/routes';
 import SearchBar from '../components/SearchBar';
@@ -33,6 +33,20 @@ const formattedEmployees = mockEmployees.map((employee) => ({
 const EmployeeList = () => {
   const [search, setSearch] = useState('');
 
+  // Filter employees based on search input
+  const filteredEmployees = useMemo(() => {
+    const lowerCaseSearch = search.toLowerCase().trim();
+
+    return formattedEmployees.filter((employee) =>
+      Object.values(employee).some((value) =>
+        // Check if any value (string or number) contains the search term
+        typeof value === 'string' || typeof value === 'number'
+          ? value.toString().toLowerCase().includes(lowerCaseSearch)
+          : false,
+      ),
+    );
+  }, [search]);
+
   return (
     <div className="mt-10 text-center">
       <h1 className="text-3xl font-bold">Current Employees</h1>
@@ -41,7 +55,7 @@ const EmployeeList = () => {
       <SearchBar value={search} onChange={setSearch} />
 
       {/* Employee data table */}
-      <DataTable data={formattedEmployees} columns={columns} />
+      <DataTable data={filteredEmployees} columns={columns} />
 
       {/* Link back to home */}
       <Link to={ROUTES.home} className="text-violet-900 underline">
