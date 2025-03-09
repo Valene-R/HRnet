@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '../router/routes';
 import SearchBar from '../components/SearchBar';
 import DataTable from '../components/DataTable';
+import ItemsPerPageSelect from '../components/ItemsPerPageSelect';
 import { mockEmployees } from '../mockData/mockEmployees';
 import { formatDateForDisplay } from '../utils/format';
 
@@ -32,6 +33,7 @@ const formattedEmployees = mockEmployees.map((employee) => ({
  */
 const EmployeeList = () => {
   const [search, setSearch] = useState('');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   // Filter employees based on search input
   const filteredEmployees = useMemo(() => {
@@ -47,15 +49,31 @@ const EmployeeList = () => {
     );
   }, [search]);
 
+  // Paginate the filtered employees
+  const paginatedEmployees = useMemo(() => {
+    return filteredEmployees.slice(0, itemsPerPage);
+  }, [filteredEmployees, itemsPerPage]);
+
   return (
-    <div className="mt-10 text-center">
+    <div className="mx-5 mt-10 text-center">
       <h1 className="text-3xl font-bold">Current Employees</h1>
 
-      {/* Search bar */}
-      <SearchBar value={search} onChange={setSearch} />
+      <div className="mb-4 flex items-center justify-between">
+        {/* Dropdown to select the number of displayed entries */}
+        <ItemsPerPageSelect
+          value={itemsPerPage}
+          onChange={setItemsPerPage}
+          options={[10, 25, 50, 100]}
+          labelBefore="Show"
+          labelAfter="entries"
+        />
+
+        {/* Search bar */}
+        <SearchBar value={search} onChange={setSearch} />
+      </div>
 
       {/* Employee data table */}
-      <DataTable data={filteredEmployees} columns={columns} noResultsMessage="No matching records found" />
+      <DataTable data={paginatedEmployees} columns={columns} noResultsMessage="No matching records found" />
 
       {/* Link back to home */}
       <Link to={ROUTES.home} className="text-violet-900 underline">
