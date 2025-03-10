@@ -22,6 +22,8 @@ const Pagination = ({
   const startEntry = totalEntries > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
   const endEntry = totalEntries > 0 ? Math.min(startEntry + itemsPerPage - 1, totalEntries) : 0;
 
+  const noResults = totalEntries === 0;
+
   return (
     <div className="mt-4 flex items-center justify-between">
       {/* Display entry count */}
@@ -35,25 +37,35 @@ const Pagination = ({
         {/* Button to go to the previous page */}
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className={`rounded border px-3 py-1 focus:ring-black focus:outline-none focus-visible:ring-1 ${currentPage === 1 ? 'cursor-not-allowed bg-gray-300' : 'cursor-pointer bg-gray-200 hover:bg-gray-300'}`}
+          disabled={currentPage <= 1}
+          className={`rounded border px-3 py-1 focus:ring-black focus:outline-none focus-visible:ring-1 ${
+            currentPage <= 1
+              ? 'cursor-not-allowed border-0 bg-gray-100'
+              : 'cursor-pointer bg-gray-200 hover:bg-gray-300'
+          }`}
         >
           Previous
         </button>
 
-        {/* Current page indicator */}
-        <input
-          type="text"
-          value={currentPage}
-          className="w-10 rounded border text-center focus:ring-black focus:outline-none focus-visible:ring-1"
-          readOnly
-        />
+        {/* Current page indicator if there are results */}
+        {!noResults && (
+          <input
+            type="text"
+            value={currentPage}
+            className="w-10 rounded border text-center focus:ring-black focus:outline-none focus-visible:ring-1"
+            readOnly
+          />
+        )}
 
         {/* Button to go to the next page */}
         <button
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className={`rounded border px-3 py-1 focus:ring-black focus:outline-none focus-visible:ring-1 ${currentPage === totalPages ? 'cursor-not-allowed bg-gray-300' : 'cursor-pointer bg-gray-200 hover:bg-gray-300'}`}
+          disabled={noResults || currentPage >= totalPages}
+          className={`rounded border px-3 py-1 focus:ring-black focus:outline-none focus-visible:ring-1 ${
+            noResults || currentPage >= totalPages
+              ? 'cursor-not-allowed border-0 bg-gray-100'
+              : 'cursor-pointer bg-gray-200 hover:bg-gray-300'
+          }`}
         >
           Next
         </button>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../router/routes';
 import SearchBar from '../components/SearchBar';
@@ -54,6 +54,15 @@ const EmployeeList = () => {
   // Calculate total pages
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
 
+  // Reset currentPage if it exceeds totalPages or if there are no results
+  useEffect(() => {
+    if (filteredEmployees.length === 0) {
+      setCurrentPage(0); // No results
+    } else if (currentPage === 0 || currentPage > totalPages) {
+      setCurrentPage(1); // Reset to page 1 if results reappear
+    }
+  }, [filteredEmployees.length, totalPages, currentPage]);
+
   // Paginate the filtered employees
   const paginatedEmployees = useMemo(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -82,6 +91,7 @@ const EmployeeList = () => {
       {/* Employee data table */}
       <DataTable data={paginatedEmployees} columns={columns} noResultsMessage="No matching records found" />
 
+      {/* Pagination to navigate between employee pages */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
