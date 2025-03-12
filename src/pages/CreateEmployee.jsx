@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../router/routes';
 import { states } from '../data/states';
@@ -13,170 +14,175 @@ import ErrorMessage from '../components/ErrorMessage';
  * @returns {JSX.Element} A form with multiple fields (inputs and selects) to create an employee
  */
 const CreateEmployee = () => {
-  // Initial values for the form fields
-  const initialFormData = {
-    firstName: '',
-    lastName: '',
-    dateOfBirth: '',
-    startDate: '',
-    street: '',
-    city: '',
-    state: 'Alabama',
-    zipCode: '',
-    department: 'Sales',
-  };
-
-  // Field labels for dynamic error messages
-  const fieldLabels = {
-    firstName: 'First Name',
-    lastName: 'Last Name',
-    dateOfBirth: 'Date of Birth',
-    startDate: 'Start Date',
-    street: 'Street',
-    city: 'City',
-    state: 'State',
-    zipCode: 'Zip Code',
-    department: 'Department',
-  };
-
-  // State to store the form data
-  const [formData, setFormData] = useState(initialFormData);
-
   // State to control the success modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // State to manage form validation errors
-  const [errors, setErrors] = useState({});
+  // State to store the newly created employee
+  const [createdEmployee, setCreatedEmployee] = useState(null);
+
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      startDate: '',
+      street: '',
+      city: '',
+      state: 'Alabama',
+      zipCode: '',
+      department: 'Sales',
+    },
+  });
 
   /**
-   * Handle form field changes
-   * @param {Event} event The event triggered
+   * Handle form submission by saving the employee to localStorage
+   * @param {Object} data The form data
    */
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-
-    setFormData((prevData) => ({
-      ...prevData, // Preserve previous data (immutability)
-      [name]: value, // Update the changed field only
-    }));
-
-    // Update the error message: clear if not empty, show error if empty
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: value.trim() ? '' : `${fieldLabels[name]} is required`,
-    }));
-  };
-
-  /**
-   * Validate the form by checking for empty fields
-   * @returns {boolean} True if the form is valid, false if invalid
-   */
-  const validateForm = () => {
-    const newErrors = Object.fromEntries(
-      Object.entries(formData)
-        .filter(([, value]) => !value.trim()) // Check for empty fields
-        .map(([key]) => [key, `${fieldLabels[key]} is required`]), // Map to error messages
-    );
-
-    setErrors(newErrors);
-    return !Object.keys(newErrors).length; // Return true if there are no error
-  };
-
-  /**
-   * Handle form submission
-   * @param {Event} event The form submission event
-   */
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    // Stop submission if validation fails
-    if (!validateForm()) return;
-
+  const onSubmit = (data) => {
     // Retrieve existing employees (or an empty array if none exist yet)
     const employees = JSON.parse(localStorage.getItem('employees')) || [];
 
-    // Ensure employees is always an array (avoid potential errors)
-    const employeesArray = Array.isArray(employees) ? employees : [];
-
     // Create a new immutable list (spread operator) by adding the new employee
-    const updatedEmployees = [...employeesArray, formData];
-
+    const updatedEmployees = [...employees, data];
     localStorage.setItem('employees', JSON.stringify(updatedEmployees)); // Save updated list
 
-    // Open success modal after form submission
-    setIsModalOpen(true);
+    setCreatedEmployee(data);
+    setIsModalOpen(true); // Open success modal after form submission
+    reset(); // Reset form fields after successful submission
   };
 
   return (
     <div className="mt-10 text-center">
       <h1 className="text-3xl font-bold">HRnet</h1>
+
+      {/* Navigation Link */}
       <Link to={ROUTES.employeeList} className="text-violet-900 underline">
         View Current Employees
       </Link>
       <h2 className="mt-4 text-2xl">Create Employee</h2>
 
-      <form onSubmit={handleSubmit} className="mt-6 flex flex-col items-center space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col items-center space-y-4">
+        {/* First Name */}
         <div>
-          <InputField label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} />
-          <ErrorMessage message={errors.firstName} />
+          <Controller
+            name="firstName"
+            control={control}
+            rules={{ required: 'First Name is required' }}
+            render={({ field }) => <InputField label="First Name" type="text" {...field} />}
+          />
+          <ErrorMessage message={errors.firstName?.message} />
         </div>
 
+        {/* Last Name */}
         <div>
-          <InputField label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} />
-          <ErrorMessage message={errors.lastName} />
+          <Controller
+            name="lastName"
+            control={control}
+            rules={{ required: 'Last Name is required' }}
+            render={({ field }) => <InputField label="Last Name" type="text" {...field} />}
+          />
+          <ErrorMessage message={errors.lastName?.message} />
         </div>
 
+        {/* Date of Birth */}
         <div>
-          <InputField label="Date of Birth" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
-          <ErrorMessage message={errors.dateOfBirth} />
+          <Controller
+            name="dateOfBirth"
+            control={control}
+            rules={{ required: 'Date of Birth is required' }}
+            render={({ field }) => <InputField label="Date of Birth" type="date" {...field} />}
+          />
+          <ErrorMessage message={errors.dateOfBirth?.message} />
         </div>
 
+        {/* Start Date */}
         <div>
-          <InputField label="Start Date" name="startDate" value={formData.startDate} onChange={handleChange} />
-          <ErrorMessage message={errors.startDate} />
+          <Controller
+            name="startDate"
+            control={control}
+            rules={{ required: 'Start Date is required' }}
+            render={({ field }) => <InputField label="Start Date" type="date" {...field} />}
+          />
+          <ErrorMessage message={errors.startDate?.message} />
         </div>
 
+        {/* Address Section */}
         <fieldset className="border p-4">
           <legend className="font-bold">Address</legend>
 
+          {/* Street */}
           <div>
-            <InputField label="Street" name="street" value={formData.street} onChange={handleChange} />
-            <ErrorMessage message={errors.street} />
-          </div>
-
-          <div>
-            <InputField label="City" name="city" value={formData.city} onChange={handleChange} />
-            <ErrorMessage message={errors.city} />
-          </div>
-
-          <div>
-            <DropdownSelect
-              label="State"
-              name="state"
-              value={formData.state}
-              options={states}
-              onChange={handleChange}
+            <Controller
+              name="street"
+              control={control}
+              rules={{ required: 'Street is required' }}
+              render={({ field }) => <InputField label="Street" {...field} />}
             />
-            <ErrorMessage message={errors.state} />
+            <ErrorMessage message={errors.street?.message} />
           </div>
 
+          {/* City */}
           <div>
-            <InputField label="Zip Code" name="zipCode" value={formData.zipCode} onChange={handleChange} />
-            <ErrorMessage message={errors.zipCode} />
+            <Controller
+              name="city"
+              control={control}
+              rules={{ required: 'City is required' }}
+              render={({ field }) => <InputField label="City" {...field} />}
+            />
+            <ErrorMessage message={errors.city?.message} />
+          </div>
+
+          {/* State */}
+          <div>
+            <Controller
+              name="state"
+              control={control}
+              rules={{ required: 'State is required' }}
+              render={({ field }) => <DropdownSelect label="State" options={states} {...field} />}
+            />
+            <ErrorMessage message={errors.state?.message} />
+          </div>
+
+          {/* Zip Code */}
+          <div>
+            <Controller
+              name="zipCode"
+              control={control}
+              rules={{
+                required: 'Zip Code is required',
+                minLength: {
+                  value: 5,
+                  message: 'Zip Code must be exactly 5 digits',
+                },
+                maxLength: {
+                  value: 5,
+                  message: 'Zip Code must be exactly 5 digits',
+                },
+              }}
+              render={({ field }) => <InputField label="Zip Code" {...field} />}
+            />
+            <ErrorMessage message={errors.zipCode?.message} />
           </div>
         </fieldset>
 
+        {/* Department */}
         <div>
-          <DropdownSelect
-            label="Department"
+          <Controller
             name="department"
-            value={formData.department}
-            options={departments}
-            onChange={handleChange}
+            control={control}
+            rules={{ required: 'Department is required' }}
+            render={({ field }) => <DropdownSelect label="Department" options={departments} {...field} />}
           />
-          <ErrorMessage message={errors.department} />
+          <ErrorMessage message={errors.department?.message} />
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="mt-4 cursor-pointer rounded border-1 bg-gray-100 px-4 py-2 text-black hover:bg-gray-200 focus:ring-1 focus:ring-black focus:outline-none"
@@ -191,17 +197,13 @@ const CreateEmployee = () => {
             <>
               Employee{' '}
               <strong className="text-2xl text-black">
-                {formData.firstName} {formData.lastName}
+                {createdEmployee?.firstName} {createdEmployee?.lastName}
               </strong>{' '}
               has been created!
             </>
           }
           isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setFormData(initialFormData); // Reset the form fields when modal is closed
-            setErrors({}); // Clear previous errors
-          }}
+          onClose={() => setIsModalOpen(false)}
           type="success"
           showCloseIcon={true}
         />
