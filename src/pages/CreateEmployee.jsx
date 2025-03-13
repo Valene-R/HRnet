@@ -8,6 +8,7 @@ import InputField from '../components/InputField';
 import DropdownSelect from '../components/DropdownSelect';
 import Modal from '../components/Modal';
 import ErrorMessage from '../components/ErrorMessage';
+import { capitalizeFirstLetter, normalizeText, normalizeAlphaNumeric, normalizeDigits } from '../utils/normalize';
 
 /**
  * Page for creating a new employee
@@ -74,7 +75,13 @@ const CreateEmployee = () => {
             name="firstName"
             control={control}
             rules={{ required: 'First Name is required' }}
-            render={({ field }) => <InputField label="First Name" type="text" {...field} />}
+            render={({ field: { onChange, ...field } }) => (
+              <InputField
+                label="First Name"
+                {...field}
+                onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
+              />
+            )}
           />
           <ErrorMessage message={errors.firstName?.message} />
         </div>
@@ -85,7 +92,13 @@ const CreateEmployee = () => {
             name="lastName"
             control={control}
             rules={{ required: 'Last Name is required' }}
-            render={({ field }) => <InputField label="Last Name" type="text" {...field} />}
+            render={({ field: { onChange, ...field } }) => (
+              <InputField
+                label="Last Name"
+                {...field}
+                onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
+              />
+            )}
           />
           <ErrorMessage message={errors.lastName?.message} />
         </div>
@@ -122,7 +135,14 @@ const CreateEmployee = () => {
               name="street"
               control={control}
               rules={{ required: 'Street is required' }}
-              render={({ field }) => <InputField label="Street" {...field} />}
+              render={({ field: { onChange, ...field } }) => (
+                <InputField
+                  label="Street"
+                  type="text"
+                  {...field}
+                  onChange={(e) => onChange(capitalizeFirstLetter(normalizeAlphaNumeric(e.target.value)))}
+                />
+              )}
             />
             <ErrorMessage message={errors.street?.message} />
           </div>
@@ -133,7 +153,14 @@ const CreateEmployee = () => {
               name="city"
               control={control}
               rules={{ required: 'City is required' }}
-              render={({ field }) => <InputField label="City" {...field} />}
+              render={({ field: { onChange, ...field } }) => (
+                <InputField
+                  label="City"
+                  type="text"
+                  {...field}
+                  onChange={(e) => onChange(capitalizeFirstLetter(normalizeText(e.target.value)))}
+                />
+              )}
             />
             <ErrorMessage message={errors.city?.message} />
           </div>
@@ -144,7 +171,14 @@ const CreateEmployee = () => {
               name="state"
               control={control}
               rules={{ required: 'State is required' }}
-              render={({ field }) => <DropdownSelect label="State" options={states} {...field} />}
+              render={({ field: { onChange, ...field } }) => (
+                <DropdownSelect
+                  label="State"
+                  options={states}
+                  {...field}
+                  onChange={(e) => onChange(e.target.value.toUpperCase())}
+                />
+              )}
             />
             <ErrorMessage message={errors.state?.message} />
           </div>
@@ -156,16 +190,14 @@ const CreateEmployee = () => {
               control={control}
               rules={{
                 required: 'Zip Code is required',
-                minLength: {
-                  value: 5,
-                  message: 'Zip Code must be exactly 5 digits',
-                },
-                maxLength: {
-                  value: 5,
+                pattern: {
+                  value: /^\d{5}$/,
                   message: 'Zip Code must be exactly 5 digits',
                 },
               }}
-              render={({ field }) => <InputField label="Zip Code" {...field} />}
+              render={({ field: { onChange, ...field } }) => (
+                <InputField label="Zip Code" {...field} onChange={(e) => onChange(normalizeDigits(e.target.value))} />
+              )}
             />
             <ErrorMessage message={errors.zipCode?.message} />
           </div>
