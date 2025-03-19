@@ -9,6 +9,7 @@ import DropdownSelect from '../components/DropdownSelect';
 import Modal from '../components/Modal';
 import ErrorMessage from '../components/ErrorMessage';
 import { capitalizeFirstLetter, normalizeText, normalizeAlphaNumeric, normalizeDigits } from '../utils/normalize';
+import { useEmployeeStore } from '../store/employeeStore';
 
 /**
  * Page for creating a new employee
@@ -20,6 +21,9 @@ const CreateEmployee = () => {
 
   // State to store the newly created employee
   const [createdEmployee, setCreatedEmployee] = useState(null);
+
+  // Zustand store function to add a new employee to the list
+  const { addEmployee } = useEmployeeStore();
 
   const {
     handleSubmit,
@@ -46,16 +50,10 @@ const CreateEmployee = () => {
    * @param {Object} data The form data
    */
   const onSubmit = (data) => {
-    // Retrieve existing employees (or an empty array if none exist yet)
-    const employees = JSON.parse(localStorage.getItem('employees')) || [];
-
-    // Create a new immutable list (spread operator) by adding the new employee
-    const updatedEmployees = [...employees, data];
-    localStorage.setItem('employees', JSON.stringify(updatedEmployees)); // Save updated list
-
+    addEmployee(data); // Use store Zustand
     setCreatedEmployee(data);
-    setIsModalOpen(true); // Open success modal after form submission
-    reset(); // Reset form fields after successful submission
+    setIsModalOpen(true);
+    reset(); // Reset the form
   };
 
   return (
