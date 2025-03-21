@@ -7,6 +7,7 @@ import ItemsPerPageSelect from '../components/ItemsPerPageSelect';
 import Pagination from '../components/Pagination';
 import { mockEmployees } from '../mockData/mockEmployees';
 import { formatDateForDisplay } from '../utils/format';
+import { useEmployeeStore } from '../store/employeeStore';
 
 // Define the columns structure for the DataTable component
 const columns = [
@@ -21,13 +22,6 @@ const columns = [
   { label: 'Zip Code', key: 'zipCode' },
 ];
 
-// Create a new employee list with properly formatted dates
-const formattedEmployees = mockEmployees.map((employee) => ({
-  ...employee,
-  startDate: formatDateForDisplay(employee.startDate),
-  dateOfBirth: formatDateForDisplay(employee.dateOfBirth),
-}));
-
 /**
  * Page displaying the list of employees
  * @returns {JSX.Element} The EmployeeList page component
@@ -36,6 +30,22 @@ const EmployeeList = () => {
   const [search, setSearch] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Use mock data (true) or real data (false)
+  const isUsingMockData = false;
+
+  // Load employees from Zustand or use mock data for testing
+  const { employees } = useEmployeeStore();
+  const employeeListData = isUsingMockData ? mockEmployees : employees;
+
+  // Format the employee dates for display
+  const formattedEmployees = useMemo(() => {
+    return employeeListData.map((employee) => ({
+      ...employee,
+      startDate: formatDateForDisplay(employee.startDate),
+      dateOfBirth: formatDateForDisplay(employee.dateOfBirth),
+    }));
+  }, [employeeListData]);
 
   // Filter employees based on search input
   const filteredEmployees = useMemo(() => {
@@ -49,7 +59,7 @@ const EmployeeList = () => {
           : false,
       ),
     );
-  }, [search]);
+  }, [search, formattedEmployees]);
 
   // Calculate total pages
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
