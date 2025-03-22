@@ -9,7 +9,7 @@ export const mockEmployees = [
     city: 'New York',
     state: 'NY',
     zipCode: '10001',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '2',
@@ -21,7 +21,7 @@ export const mockEmployees = [
     city: 'Los Angeles',
     state: 'CA',
     zipCode: '90001',
-    department: 'IT',
+    department: 'Legal',
   },
   {
     id: '3',
@@ -81,7 +81,7 @@ export const mockEmployees = [
     city: 'San Antonio',
     state: 'TX',
     zipCode: '78201',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '8',
@@ -117,7 +117,7 @@ export const mockEmployees = [
     city: 'San Jose',
     state: 'CA',
     zipCode: '95101',
-    department: 'IT',
+    department: 'Sales',
   },
   {
     id: '11',
@@ -153,7 +153,7 @@ export const mockEmployees = [
     city: 'San Francisco',
     state: 'CA',
     zipCode: '94101',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '14',
@@ -177,7 +177,7 @@ export const mockEmployees = [
     city: 'Indianapolis',
     state: 'IN',
     zipCode: '46201',
-    department: 'IT',
+    department: 'Marketing',
   },
   {
     id: '16',
@@ -237,7 +237,7 @@ export const mockEmployees = [
     city: 'Boston',
     state: 'MA',
     zipCode: '02101',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '21',
@@ -249,7 +249,7 @@ export const mockEmployees = [
     city: 'Miami',
     state: 'FL',
     zipCode: '33101',
-    department: 'IT',
+    department: 'Legal',
   },
   {
     id: '22',
@@ -309,7 +309,7 @@ export const mockEmployees = [
     city: 'Las Vegas',
     state: 'NV',
     zipCode: '89101',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '27',
@@ -345,7 +345,7 @@ export const mockEmployees = [
     city: 'Nashville',
     state: 'TN',
     zipCode: '37201',
-    department: 'IT',
+    department: 'Sales',
   },
   {
     id: '30',
@@ -381,7 +381,7 @@ export const mockEmployees = [
     city: 'Detroit',
     state: 'MI',
     zipCode: '48201',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '33',
@@ -405,7 +405,7 @@ export const mockEmployees = [
     city: 'Louisville',
     state: 'KY',
     zipCode: '40201',
-    department: 'IT',
+    department: 'Sales',
   },
   {
     id: '35',
@@ -465,7 +465,7 @@ export const mockEmployees = [
     city: 'Kansas City',
     state: 'MO',
     zipCode: '64101',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '40',
@@ -489,7 +489,7 @@ export const mockEmployees = [
     city: 'Charlotte',
     state: 'NC',
     zipCode: '28201',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '42',
@@ -525,7 +525,7 @@ export const mockEmployees = [
     city: 'Philadelphia',
     state: 'PA',
     zipCode: '19101',
-    department: 'IT',
+    department: 'Marketing',
   },
   {
     id: '45',
@@ -549,7 +549,7 @@ export const mockEmployees = [
     city: 'Denver',
     state: 'CO',
     zipCode: '80202',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '47',
@@ -609,7 +609,7 @@ export const mockEmployees = [
     city: 'Boston',
     state: 'MA',
     zipCode: '02102',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '52',
@@ -621,7 +621,7 @@ export const mockEmployees = [
     city: 'Columbus',
     state: 'OH',
     zipCode: '43201',
-    department: 'IT',
+    department: 'Legal',
   },
   {
     id: '53',
@@ -681,7 +681,7 @@ export const mockEmployees = [
     city: 'Baltimore',
     state: 'MD',
     zipCode: '21202',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '58',
@@ -693,7 +693,7 @@ export const mockEmployees = [
     city: 'Atlanta',
     state: 'GA',
     zipCode: '30302',
-    department: 'IT',
+    department: 'Sales',
   },
   {
     id: '59',
@@ -717,7 +717,7 @@ export const mockEmployees = [
     city: 'San Antonio',
     state: 'TX',
     zipCode: '78201',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '61',
@@ -729,7 +729,7 @@ export const mockEmployees = [
     city: 'Nashville',
     state: 'TN',
     zipCode: '37201',
-    department: 'IT',
+    department: 'Sales',
   },
   {
     id: '62',
@@ -777,7 +777,7 @@ export const mockEmployees = [
     city: 'Portland',
     state: 'OR',
     zipCode: '97201',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '66',
@@ -801,7 +801,7 @@ export const mockEmployees = [
     city: 'Minneapolis',
     state: 'MN',
     zipCode: '55401',
-    department: 'IT',
+    department: 'Sales',
   },
   {
     id: '68',
@@ -849,7 +849,7 @@ export const mockEmployees = [
     city: 'New Orleans',
     state: 'LA',
     zipCode: '70101',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '72',
@@ -873,7 +873,7 @@ export const mockEmployees = [
     city: 'Phoenix',
     state: 'AZ',
     zipCode: '85003',
-    department: 'IT',
+    department: 'Legal',
   },
   {
     id: '74',
@@ -921,7 +921,7 @@ export const mockEmployees = [
     city: 'Seattle',
     state: 'WA',
     zipCode: '98103',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '78',
@@ -945,7 +945,7 @@ export const mockEmployees = [
     city: 'Houston',
     state: 'TX',
     zipCode: '77002',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '80',
@@ -957,7 +957,7 @@ export const mockEmployees = [
     city: 'Chicago',
     state: 'IL',
     zipCode: '60602',
-    department: 'IT',
+    department: 'Marketing',
   },
   {
     id: '81',
@@ -1005,7 +1005,7 @@ export const mockEmployees = [
     city: 'Austin',
     state: 'TX',
     zipCode: '73303',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '85',
@@ -1029,7 +1029,7 @@ export const mockEmployees = [
     city: 'San Jose',
     state: 'CA',
     zipCode: '95110',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '87',
@@ -1041,7 +1041,7 @@ export const mockEmployees = [
     city: 'Indianapolis',
     state: 'IN',
     zipCode: '46204',
-    department: 'IT',
+    department: 'Engineering',
   },
   {
     id: '88',
@@ -1101,7 +1101,7 @@ export const mockEmployees = [
     city: 'Los Angeles',
     state: 'CA',
     zipCode: '90004',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '93',
@@ -1113,7 +1113,7 @@ export const mockEmployees = [
     city: 'Miami',
     state: 'FL',
     zipCode: '33130',
-    department: 'IT',
+    department: 'Legal',
   },
   {
     id: '94',
@@ -1173,7 +1173,7 @@ export const mockEmployees = [
     city: 'Charlotte',
     state: 'NC',
     zipCode: '28208',
-    department: 'HR',
+    department: 'Human Resources',
   },
   {
     id: '99',
@@ -1185,7 +1185,7 @@ export const mockEmployees = [
     city: 'Nashville',
     state: 'TN',
     zipCode: '37209',
-    department: 'IT',
+    department: 'Legal',
   },
   {
     id: '100',
@@ -1245,6 +1245,6 @@ export const mockEmployees = [
     city: 'Las Vegas',
     state: 'NV',
     zipCode: '89109',
-    department: 'HR',
+    department: 'Human Resources',
   },
 ];
