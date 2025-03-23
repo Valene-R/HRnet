@@ -1,7 +1,8 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { ROUTES } from './routes';
 import CreateEmployee from '../pages/CreateEmployee';
 import EmployeeList from '../pages/EmployeeList';
+import Home from '../pages/Home';
 
 /**
  * Define and handle the application routes
@@ -10,7 +11,7 @@ import EmployeeList from '../pages/EmployeeList';
 export default function Router() {
   return (
     <Routes>
-      <Route path={ROUTES.home} element={<Navigate to={ROUTES.createEmployee} replace />} />
+      <Route path={ROUTES.home} element={<Home />} />
       <Route path={ROUTES.createEmployee} element={<CreateEmployee />} />
       <Route path={ROUTES.employeeList} element={<EmployeeList />} />
     </Routes>
