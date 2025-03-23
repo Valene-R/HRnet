@@ -57,14 +57,20 @@ const CreateEmployee = () => {
   };
 
   return (
-    <div className="mt-10 text-center">
+    <div className="mt-10 flex flex-col items-center justify-center">
       <h1 className="text-3xl font-bold">HRnet</h1>
 
-      {/* Navigation Link */}
-      <Link to={ROUTES.employeeList} className="text-violet-900 underline">
-        View Current Employees
-      </Link>
-      <h2 className="mt-4 text-2xl">Create Employee</h2>
+      <div className="flex flex-col gap-x-7">
+        {/* Link back to home */}
+        <Link to={ROUTES.home} className="text-violet-900 underline">
+          Home
+        </Link>
+        {/* Link to the current list of employees */}
+        <Link to={ROUTES.employeeList} className="text-violet-900 underline">
+          View Current Employees
+        </Link>
+        <h2 className="mt-4 text-2xl">Create Employee</h2>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col items-center space-y-4">
         {/* First Name */}
