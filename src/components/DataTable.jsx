@@ -15,7 +15,7 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
       <thead className="bg-gray-100">
         <tr>
           {columns.map(({ label, key }) => (
-            <th key={key} className="border p-2 text-center">
+            <th key={key} className="border border-x-transparent border-t-transparent p-2 text-center">
               {label}
             </th>
           ))}
@@ -30,11 +30,11 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
             </td>
           </tr>
         ) : (
-          // Display table rows when data exists
+          // Display table rows when data exists with alternating background colors and hover effect
           data.map((row, rowIndex) => (
-            <tr key={rowIndex} className="hover:bg-gray-100">
+            <tr key={rowIndex} className={`hover:bg-gray-200 ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
               {columns.map(({ key }) => (
-                <td key={key} className="border p-2">
+                <td key={key} className="border border-x-transparent border-y-gray-300 p-2">
                   {/* Display the value corresponding to the key in the row object */}
                   {row[key]}
                 </td>
