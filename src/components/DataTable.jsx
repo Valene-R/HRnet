@@ -11,39 +11,41 @@ import PropTypes from 'prop-types';
  */
 const DataTable = ({ data, columns, noResultsMessage }) => {
   return (
-    <table className="m-auto w-full border border-gray-300">
-      <thead className="bg-gray-100">
-        <tr>
-          {columns.map(({ label, key }) => (
-            <th key={key} className="border border-x-transparent border-t-transparent p-2 text-center">
-              {label}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.length === 0 ? (
-          // Use the prop noResultsMessage when no data is found
+    <div className="mx-auto mt-6 w-full max-w-5xl overflow-x-auto rounded-lg shadow-md">
+      <table className="m-auto w-full min-w-[800px] border-8 border-white">
+        <thead className="bg-gray-100">
           <tr>
-            <td colSpan={columns.length} className="border p-2 text-center text-gray-500">
-              {noResultsMessage}
-            </td>
+            {columns.map(({ label, key }) => (
+              <th key={key} className="border border-x-transparent border-t-transparent p-2 text-center">
+                {label}
+              </th>
+            ))}
           </tr>
-        ) : (
-          // Display table rows when data exists with alternating background colors and hover effect
-          data.map((row, rowIndex) => (
-            <tr key={rowIndex} className={`hover:bg-gray-200 ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
-              {columns.map(({ key }) => (
-                <td key={key} className="border border-x-transparent border-y-gray-300 p-2">
-                  {/* Display the value corresponding to the key in the row object */}
-                  {row[key]}
-                </td>
-              ))}
+        </thead>
+        <tbody>
+          {data.length === 0 ? (
+            // Use the prop noResultsMessage when no data is found
+            <tr>
+              <td colSpan={columns.length} className="border p-2 text-center text-gray-500">
+                {noResultsMessage}
+              </td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ) : (
+            // Display table rows when data exists with alternating background colors and hover effect
+            data.map((row, rowIndex) => (
+              <tr key={rowIndex} className={`hover:bg-gray-200 ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
+                {columns.map(({ key }) => (
+                  <td key={key} className="border border-x-transparent border-y-gray-300 p-2">
+                    {/* Display the value corresponding to the key in the row object */}
+                    {row[key]}
+                  </td>
+                ))}
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

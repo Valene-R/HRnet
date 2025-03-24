@@ -14,7 +14,11 @@ const ItemsPerPageSelect = ({ value, onChange, options, labelBefore, labelAfter 
   return (
     <div className="mb-4 flex items-center">
       {labelBefore && <label className="mr-2">{labelBefore}</label>}
-      <select className="border p-2" value={value} onChange={(e) => onChange(Number(e.target.value))}>
+      <select
+        className="cursor-pointer rounded border p-2"
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+      >
         {options.map((num) => (
           <option key={num} value={num}>
             {num}

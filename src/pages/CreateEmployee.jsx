@@ -57,193 +57,200 @@ const CreateEmployee = () => {
   };
 
   return (
-    <div className="mt-10 flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold">HRnet</h1>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 py-8 text-center">
+      <h1 className="mb-6 text-4xl font-bold text-[#485330]">Create employee</h1>
 
-      <div className="flex flex-col gap-x-7">
+      <div className="flex gap-x-7">
         {/* Link back to home */}
-        <Link to={ROUTES.home} className="text-violet-900 underline">
+        <Link
+          to={ROUTES.home}
+          className="mb-6 cursor-pointer text-lg text-[#779432] underline transition-transform hover:scale-105 hover:text-[#485330]"
+        >
           Home
         </Link>
         {/* Link to the current list of employees */}
-        <Link to={ROUTES.employeeList} className="text-violet-900 underline">
+        <Link
+          to={ROUTES.employeeList}
+          className="mb-6 cursor-pointer text-lg text-[#779432] underline transition-transform hover:scale-105 hover:text-[#485330]"
+        >
           View Current Employees
         </Link>
-        <h2 className="mt-4 text-2xl">Create Employee</h2>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-6 flex flex-col items-center space-y-4">
-        {/* First Name */}
-        <div>
-          <Controller
-            name="firstName"
-            control={control}
-            rules={{ required: 'First Name is required' }}
-            render={({ field: { onChange, ...field } }) => (
-              <InputField
-                label="First Name"
-                {...field}
-                onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
-              />
-            )}
-          />
-          <ErrorMessage message={errors.firstName?.message} />
-        </div>
-
-        {/* Last Name */}
-        <div>
-          <Controller
-            name="lastName"
-            control={control}
-            rules={{ required: 'Last Name is required' }}
-            render={({ field: { onChange, ...field } }) => (
-              <InputField
-                label="Last Name"
-                {...field}
-                onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
-              />
-            )}
-          />
-          <ErrorMessage message={errors.lastName?.message} />
-        </div>
-
-        {/* Date of Birth */}
-        <div>
-          <Controller
-            name="dateOfBirth"
-            control={control}
-            rules={{ required: 'Date of Birth is required' }}
-            render={({ field }) => <InputField label="Date of Birth" type="date" {...field} />}
-          />
-          <ErrorMessage message={errors.dateOfBirth?.message} />
-        </div>
-
-        {/* Start Date */}
-        <div>
-          <Controller
-            name="startDate"
-            control={control}
-            rules={{ required: 'Start Date is required' }}
-            render={({ field }) => <InputField label="Start Date" type="date" {...field} />}
-          />
-          <ErrorMessage message={errors.startDate?.message} />
-        </div>
-
-        {/* Address Section */}
-        <fieldset className="border p-4">
-          <legend className="font-bold">Address</legend>
-
-          {/* Street */}
+      <div className="mb-10 w-full max-w-lg rounded-lg bg-white p-8 shadow-lg shadow-[#485330]/30">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center space-y-4">
+          {/* First Name */}
           <div>
             <Controller
-              name="street"
+              name="firstName"
               control={control}
-              rules={{ required: 'Street is required' }}
+              rules={{ required: 'First Name is required' }}
               render={({ field: { onChange, ...field } }) => (
                 <InputField
-                  label="Street"
-                  type="text"
+                  label="First Name"
                   {...field}
-                  onChange={(e) => onChange(capitalizeFirstLetter(normalizeAlphaNumeric(e.target.value)))}
+                  onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
                 />
               )}
             />
-            <ErrorMessage message={errors.street?.message} />
+            <ErrorMessage message={errors.firstName?.message} />
           </div>
 
-          {/* City */}
+          {/* Last Name */}
           <div>
             <Controller
-              name="city"
+              name="lastName"
               control={control}
-              rules={{ required: 'City is required' }}
+              rules={{ required: 'Last Name is required' }}
               render={({ field: { onChange, ...field } }) => (
                 <InputField
-                  label="City"
-                  type="text"
+                  label="Last Name"
                   {...field}
-                  onChange={(e) => onChange(capitalizeFirstLetter(normalizeText(e.target.value)))}
+                  onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
                 />
               )}
             />
-            <ErrorMessage message={errors.city?.message} />
+            <ErrorMessage message={errors.lastName?.message} />
           </div>
 
-          {/* State */}
+          {/* Date of Birth */}
           <div>
             <Controller
-              name="state"
+              name="dateOfBirth"
               control={control}
-              rules={{ required: 'State is required' }}
-              render={({ field: { onChange, ...field } }) => (
-                <DropdownSelect
-                  label="State"
-                  options={states}
-                  {...field}
-                  onChange={(e) => onChange(e.target.value.toUpperCase())}
-                />
-              )}
+              rules={{ required: 'Date of Birth is required' }}
+              render={({ field }) => <InputField label="Date of Birth" type="date" {...field} />}
             />
-            <ErrorMessage message={errors.state?.message} />
+            <ErrorMessage message={errors.dateOfBirth?.message} />
           </div>
 
-          {/* Zip Code */}
+          {/* Start Date */}
           <div>
             <Controller
-              name="zipCode"
+              name="startDate"
               control={control}
-              rules={{
-                required: 'Zip Code is required',
-                pattern: {
-                  value: /^\d{5}$/,
-                  message: 'Zip Code must be exactly 5 digits',
-                },
-              }}
-              render={({ field: { onChange, ...field } }) => (
-                <InputField label="Zip Code" {...field} onChange={(e) => onChange(normalizeDigits(e.target.value))} />
-              )}
+              rules={{ required: 'Start Date is required' }}
+              render={({ field }) => <InputField label="Start Date" type="date" {...field} />}
             />
-            <ErrorMessage message={errors.zipCode?.message} />
+            <ErrorMessage message={errors.startDate?.message} />
           </div>
-        </fieldset>
 
-        {/* Department */}
-        <div>
-          <Controller
-            name="department"
-            control={control}
-            rules={{ required: 'Department is required' }}
-            render={({ field }) => <DropdownSelect label="Department" options={departments} {...field} />}
+          {/* Address Section */}
+          <fieldset className="mt-4 rounded-lg border-2 border-[#779432] px-12 py-4">
+            <legend className="font-bold text-[#485330]">Address</legend>
+
+            {/* Street */}
+            <div>
+              <Controller
+                name="street"
+                control={control}
+                rules={{ required: 'Street is required' }}
+                render={({ field: { onChange, ...field } }) => (
+                  <InputField
+                    label="Street"
+                    type="text"
+                    {...field}
+                    onChange={(e) => onChange(capitalizeFirstLetter(normalizeAlphaNumeric(e.target.value)))}
+                  />
+                )}
+              />
+              <ErrorMessage message={errors.street?.message} />
+            </div>
+
+            {/* City */}
+            <div>
+              <Controller
+                name="city"
+                control={control}
+                rules={{ required: 'City is required' }}
+                render={({ field: { onChange, ...field } }) => (
+                  <InputField
+                    label="City"
+                    type="text"
+                    {...field}
+                    onChange={(e) => onChange(capitalizeFirstLetter(normalizeText(e.target.value)))}
+                  />
+                )}
+              />
+              <ErrorMessage message={errors.city?.message} />
+            </div>
+
+            {/* State */}
+            <div>
+              <Controller
+                name="state"
+                control={control}
+                rules={{ required: 'State is required' }}
+                render={({ field: { onChange, ...field } }) => (
+                  <DropdownSelect
+                    label="State"
+                    options={states}
+                    {...field}
+                    onChange={(e) => onChange(e.target.value.toUpperCase())}
+                  />
+                )}
+              />
+              <ErrorMessage message={errors.state?.message} />
+            </div>
+
+            {/* Zip Code */}
+            <div>
+              <Controller
+                name="zipCode"
+                control={control}
+                rules={{
+                  required: 'Zip Code is required',
+                  pattern: {
+                    value: /^\d{5}$/,
+                    message: 'Zip Code must be exactly 5 digits',
+                  },
+                }}
+                render={({ field: { onChange, ...field } }) => (
+                  <InputField label="Zip Code" {...field} onChange={(e) => onChange(normalizeDigits(e.target.value))} />
+                )}
+              />
+              <ErrorMessage message={errors.zipCode?.message} />
+            </div>
+          </fieldset>
+
+          {/* Department */}
+          <div>
+            <Controller
+              name="department"
+              control={control}
+              rules={{ required: 'Department is required' }}
+              render={({ field }) => <DropdownSelect label="Department" options={departments} {...field} />}
+            />
+            <ErrorMessage message={errors.department?.message} />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="mt-6 w-full max-w-3xs transform cursor-pointer rounded-lg bg-[#779432] px-6 py-3 text-lg font-bold text-white transition-transform hover:scale-105 hover:bg-[#485330] focus:ring-1 focus:ring-black focus:outline-none"
+          >
+            Save
+          </button>
+
+          {/* Success modal displayed after employee creation */}
+          <Modal
+            title="Success"
+            message={
+              <>
+                Employee{' '}
+                <strong className="text-2xl text-black">
+                  {createdEmployee?.firstName} {createdEmployee?.lastName}
+                </strong>{' '}
+                has been created!
+              </>
+            }
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            type="success"
+            showCloseIcon={true}
           />
-          <ErrorMessage message={errors.department?.message} />
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="mt-4 cursor-pointer rounded border-1 bg-gray-100 px-4 py-2 text-black hover:bg-gray-200 focus:ring-1 focus:ring-black focus:outline-none"
-        >
-          Save
-        </button>
-
-        {/* Success modal displayed after employee creation */}
-        <Modal
-          title="Success"
-          message={
-            <>
-              Employee{' '}
-              <strong className="text-2xl text-black">
-                {createdEmployee?.firstName} {createdEmployee?.lastName}
-              </strong>{' '}
-              has been created!
-            </>
-          }
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          type="success"
-          showCloseIcon={true}
-        />
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

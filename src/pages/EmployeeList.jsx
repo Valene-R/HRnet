@@ -81,40 +81,54 @@ const EmployeeList = () => {
   }, [filteredEmployees, itemsPerPage, currentPage]);
 
   return (
-    <div className="mx-5 mt-10 text-center">
-      <h1 className="text-3xl font-bold">Current Employees</h1>
+    <div className="flex min-h-screen w-full flex-col items-center bg-gray-100 px-4 py-8 text-center">
+      <h1 className="mb-6 text-4xl font-bold text-[#5A6B40]">Current Employees</h1>
 
-      <div className="mb-4 flex items-center justify-between">
-        {/* Dropdown to select the number of displayed entries */}
-        <ItemsPerPageSelect
-          value={itemsPerPage}
-          onChange={setItemsPerPage}
-          options={[10, 25, 50, 100]}
-          labelBefore="Show"
-          labelAfter="entries"
-        />
-
-        {/* Search bar */}
-        <SearchBar value={search} onChange={setSearch} />
+      <div className="flex gap-x-7">
+        {/* Link back to home */}
+        <Link
+          to={ROUTES.home}
+          className="mb-6 cursor-pointer text-lg text-[#779432] underline transition-transform hover:scale-105 hover:text-[#485330]"
+        >
+          Home
+        </Link>
+        {/* Link back to form employee creation */}
+        <Link
+          to={ROUTES.createEmployee}
+          className="mb-6 cursor-pointer text-lg text-[#779432] underline transition-transform hover:scale-105 hover:text-[#485330]"
+        >
+          Create employee
+        </Link>
       </div>
 
-      {/* Employee data table */}
-      <DataTable data={paginatedEmployees} columns={columns} noResultsMessage="No matching records found" />
+      <div className="w-full max-w-5xl">
+        <div className="mb-6 flex w-full max-w-5xl flex-col items-center justify-between gap-x-4 xl:flex-row">
+          {/* Dropdown to select the number of displayed entries */}
+          <ItemsPerPageSelect
+            value={itemsPerPage}
+            onChange={setItemsPerPage}
+            options={[10, 25, 50, 100]}
+            labelBefore="Show"
+            labelAfter="entries"
+          />
 
-      {/* Pagination to navigate between employee pages */}
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        setCurrentPage={setCurrentPage}
-        totalEntries={filteredEmployees.length}
-        totalUnfilteredEntries={formattedEmployees.length}
-        itemsPerPage={itemsPerPage}
-      />
+          {/* Search bar */}
+          <SearchBar value={search} onChange={setSearch} />
+        </div>
 
-      {/* Link back to home */}
-      <Link to={ROUTES.home} className="text-violet-900 underline">
-        Home
-      </Link>
+        {/* Employee data table */}
+        <DataTable data={paginatedEmployees} columns={columns} noResultsMessage="No matching records found" />
+
+        {/* Pagination to navigate between employee pages */}
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+          totalEntries={filteredEmployees.length}
+          totalUnfilteredEntries={formattedEmployees.length}
+          itemsPerPage={itemsPerPage}
+        />
+      </div>
     </div>
   );
 };
