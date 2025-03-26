@@ -39,7 +39,7 @@ const CreateEmployee = () => {
       startDate: '',
       street: '',
       city: '',
-      state: 'Alabama',
+      state: 'AL',
       zipCode: '',
       department: 'Sales',
     },
