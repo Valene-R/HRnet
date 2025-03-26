@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState, useMemo } from 'react';
 
 /**
  * DataTable component that displays a table with structured data
@@ -10,20 +11,86 @@ import PropTypes from 'prop-types';
  * @returns {JSX.Element} A table displaying the provided data
  */
 const DataTable = ({ data, columns, noResultsMessage }) => {
+  // State for storing the sorting (column key and direction)
+  const [sortingState, setSortingState] = useState({ key: null, direction: 'asc' });
+
+  /**
+   * Handle column sorting
+   * @param {string} key The key of the column to be sorted
+   */
+  const handleSort = (key) => {
+    if (sortingState.key === key) {
+      // Toggle sorting direction between ascending and descending
+      setSortingState({
+        key,
+        direction: sortingState.direction === 'asc' ? 'desc' : 'asc',
+      });
+    } else {
+      // Set sorting direction to ascending for a new column
+      setSortingState({ key, direction: 'asc' });
+    }
+  };
+
+  /**
+   * Sort the data based on the current sorting state
+   * Memoize sorted data to prevent unnecessary re-sorting
+   */
+  const sortedData = useMemo(() => {
+    if (!sortingState.key) return data;
+
+    return [...data].sort((a, b) => {
+      const aValue = a[sortingState.key] || '';
+      const bValue = b[sortingState.key] || '';
+
+      // Compare as strings for consistent sorting
+      return sortingState.direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    });
+  }, [data, sortingState]);
+
   return (
     <div className="mx-auto mt-6 w-full max-w-5xl overflow-x-auto rounded-lg shadow-md">
       <table className="m-auto w-full min-w-[800px] border-8 border-white">
         <thead className="bg-gray-100">
           <tr>
             {columns.map(({ label, key }) => (
-              <th key={key} className="border border-x-transparent border-t-transparent p-2 text-center">
-                {label}
+              <th
+                key={key}
+                onClick={() => handleSort(key)}
+                className={`h-12 cursor-pointer border border-x-transparent border-t-transparent p-2 text-center select-none ${
+                  sortingState.key === key ? 'bg-gray-200' : ''
+                }`}
+              >
+                <div className="flex items-center justify-center gap-1 text-sm">
+                  {label}
+                  <div className="flex flex-col">
+                    {/* Ascending Arrow */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`size-7 transition-colors ${
+                        sortingState.key === key && sortingState.direction === 'asc' ? 'fill-black' : 'fill-gray-400'
+                      }`}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M7 14l5-5 5 5H7z" />
+                    </svg>
+                    {/* Descending Arrow */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`size-7 transition-colors ${
+                        sortingState.key === key && sortingState.direction === 'desc' ? 'fill-black' : 'fill-gray-400'
+                      }`}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M7 10l5 5 5-5H7z" />
+                    </svg>
+                  </div>
+                </div>
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {data.length === 0 ? (
+          {sortedData.length === 0 ? (
             // Use the prop noResultsMessage when no data is found
             <tr>
               <td colSpan={columns.length} className="border p-2 text-center text-gray-500">
@@ -32,10 +99,15 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
             </tr>
           ) : (
             // Display table rows when data exists with alternating background colors and hover effect
-            data.map((row, rowIndex) => (
+            sortedData.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-gray-200 ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
                 {columns.map(({ key }) => (
-                  <td key={key} className="border border-x-transparent border-y-gray-300 p-2">
+                  <td
+                    key={key}
+                    className={`border border-x-transparent border-y-gray-300 p-2 ${
+                      sortingState.key === key ? 'bg-gray-200' : ''
+                    }`}
+                  >
                     {/* Display the value corresponding to the key in the row object */}
                     {row[key]}
                   </td>
