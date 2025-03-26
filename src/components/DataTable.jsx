@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useMemo } from 'react';
+import ActionIcons from './ActionIcons';
 
 /**
  * DataTable component that displays a table with structured data
@@ -87,6 +88,8 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
                 </div>
               </th>
             ))}
+            {/* 'Actions' column */}
+            <th className="h-12 border border-x-transparent border-t-transparent p-5 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -112,6 +115,10 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
                     {row[key]}
                   </td>
                 ))}
+                {/* Action icons for each row */}
+                <td className="border border-x-transparent border-y-gray-300 p-2">
+                  <ActionIcons onEdit={() => {}} onDelete={() => {}} />
+                </td>
               </tr>
             ))
           )}
