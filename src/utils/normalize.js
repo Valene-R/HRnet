@@ -22,25 +22,21 @@ export const normalizeDigits = (text, length = 5) => {
 /**
  * Normalize text to allow letters, spaces, and hyphens
  *@param {string} text The text to normalize
- * @param {number} [maxLength=20] The maximum length of the normalized text
  * @returns {string} The normalized text
  */
-export const normalizeText = (text, maxLength = 20) => {
+export const normalizeText = (text) => {
   return text
     .replace(/[^a-zA-Z\s-]/g, '') // Allow letters, spaces, hyphens
-    .replace(/\s+/g, ' ') // Replace multiple spaces with a single one
-    .slice(0, maxLength);
+    .replace(/\s+/g, ' '); // Replace multiple spaces with a single one
 };
 
 /**
  * Normalize alphanumeric text allowing numbers, spaces, and hyphens
  * @param {string} text The text to normalize
- * @param {number} [maxLength=50] The maximum length of the normalized text
  * @returns {string} The normalized alphanumeric string
  */
-export const normalizeAlphaNumeric = (text, maxLength = 40) => {
+export const normalizeAlphaNumeric = (text) => {
   return text
     .replace(/[^a-zA-Z0-9\s-]/g, '') // Allow letters, numbers, spaces, hyphens
-    .replace(/\s+/g, ' ')
-    .slice(0, maxLength);
+    .replace(/\s+/g, ' ');
 };

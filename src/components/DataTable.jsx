@@ -107,7 +107,7 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
                 {columns.map(({ key }) => (
                   <td
                     key={key}
-                    className={`border border-x-transparent border-y-gray-300 p-2 ${
+                    className={`max-w-[110px] border border-x-transparent border-y-gray-300 p-2 break-words whitespace-normal ${
                       sortingState.key === key ? 'bg-gray-200' : ''
                     }`}
                   >

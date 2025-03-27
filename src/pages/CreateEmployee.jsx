@@ -84,12 +84,16 @@ const CreateEmployee = () => {
             <Controller
               name="firstName"
               control={control}
-              rules={{ required: 'First Name is required' }}
+              rules={{
+                required: 'First Name is required',
+                maxLength: { value: 15, message: 'Maximum 15 characters allowed' },
+              }}
               render={({ field: { onChange, ...field } }) => (
                 <InputField
                   label="First Name"
                   {...field}
                   onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
+                  maxLength={16}
                 />
               )}
             />
@@ -101,12 +105,16 @@ const CreateEmployee = () => {
             <Controller
               name="lastName"
               control={control}
-              rules={{ required: 'Last Name is required' }}
+              rules={{
+                required: 'Last Name is required',
+                maxLength: { value: 15, message: 'Maximum 15 characters allowed' },
+              }}
               render={({ field: { onChange, ...field } }) => (
                 <InputField
                   label="Last Name"
                   {...field}
                   onChange={(e) => onChange(capitalizeFirstLetter(e.target.value))}
+                  maxLength={16}
                 />
               )}
             />
@@ -144,13 +152,17 @@ const CreateEmployee = () => {
               <Controller
                 name="street"
                 control={control}
-                rules={{ required: 'Street is required' }}
+                rules={{
+                  required: 'Street is required',
+                  maxLength: { value: 20, message: 'Maximum 20 characters allowed' },
+                }}
                 render={({ field: { onChange, ...field } }) => (
                   <InputField
                     label="Street"
                     type="text"
                     {...field}
                     onChange={(e) => onChange(capitalizeFirstLetter(normalizeAlphaNumeric(e.target.value)))}
+                    maxLength={21}
                   />
                 )}
               />
@@ -162,13 +174,17 @@ const CreateEmployee = () => {
               <Controller
                 name="city"
                 control={control}
-                rules={{ required: 'City is required' }}
+                rules={{
+                  required: 'City is required',
+                  maxLength: { value: 20, message: 'Maximum 20 characters allowed' },
+                }}
                 render={({ field: { onChange, ...field } }) => (
                   <InputField
                     label="City"
                     type="text"
                     {...field}
                     onChange={(e) => onChange(capitalizeFirstLetter(normalizeText(e.target.value)))}
+                    maxLength={21}
                   />
                 )}
               />
