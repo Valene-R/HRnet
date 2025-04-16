@@ -13,11 +13,12 @@ import { capitalizeFirstLetter, normalizeText, normalizeAlphaNumeric, normalizeD
  * @param {Object} props
  * @param {Object} [props.existingEmployee] The employee data to be edited, if any
  * @param {Function} [props.onClose] Callback function called after saving (e.g. to close an edit modal)
- * @param {Function} props.onSave  Callback function to handle saving the employee data
- * @param {boolean} props.showSubmitButton Whether to show the Submit button
+ * @param {Function} props.onSave Callback function to handle saving the employee data
+ * @param {Function} [props.onReset] Callback to pass the internal reset function to the parent component
+ * @param {boolean} props.showSubmitButton Show or hide the submit button
  * @returns {JSX.Element} The form
  */
-const EmployeeForm = ({ existingEmployee, onClose, onSave, showSubmitButton = false }) => {
+const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitButton = false }) => {
   const {
     handleSubmit,
     control,
@@ -43,7 +44,11 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, showSubmitButton = fa
     if (existingEmployee) {
       reset(existingEmployee);
     }
-  }, [existingEmployee, reset]);
+    // If onReset is provided, pass reset to parent
+    if (onReset) {
+      onReset(() => reset());
+    }
+  }, [existingEmployee, onReset, reset]);
 
   // Handle form submission: save data and optionally close modal
   const onSubmit = (data) => {
@@ -244,6 +249,7 @@ EmployeeForm.propTypes = {
   }),
   onClose: PropTypes.func,
   onSave: PropTypes.func.isRequired,
+  onReset: PropTypes.func,
   showSubmitButton: PropTypes.bool,
 };
 

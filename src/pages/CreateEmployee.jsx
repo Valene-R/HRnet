@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../router/routes';
 import Modal from '../components/Modal';
@@ -20,6 +20,9 @@ const CreateEmployee = () => {
   // Zustand store function to add a new employee to the list
   const { addEmployee } = useEmployeeStore();
 
+  // Reference to hold the reset function from EmployeeForm
+  const resetFormRef = useRef(null); // Ref to store the reset function
+
   /**
    * Handle form submission by saving the employee to Zustand store
    * @param {Object} data The form data
@@ -28,6 +31,9 @@ const CreateEmployee = () => {
     addEmployee(data); // Use store Zustand
     setCreatedEmployee(data);
     setIsModalOpen(true);
+
+    // Call the reset function only if this is a new employee (no id)
+    if (!data.id && resetFormRef.current) resetFormRef.current();
   };
 
   return (
@@ -52,7 +58,12 @@ const CreateEmployee = () => {
       </div>
 
       <div className="mb-10 w-full max-w-lg rounded-lg bg-white p-8 shadow-lg shadow-[#485330]/30">
-        <EmployeeForm onSave={handleSave} showSubmitButton={true} />
+        {/* Form */}
+        <EmployeeForm
+          onSave={handleSave}
+          showSubmitButton={true}
+          onReset={(resetFn) => (resetFormRef.current = resetFn)} // Store the reset function in the ref
+        />
 
         {/* Success modal displayed after employee creation */}
         <Modal
