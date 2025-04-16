@@ -11,9 +11,11 @@ import ActionIcons from './ActionIcons';
  * @param {string} noResultsMessage Message displayed when no data is found
  * @param {Function} onEdit Function called when editing an employee
  * @param {Function} onDelete Function called when deleting an employee
+ * @param {number} currentPage Current pagination page (1-based)
+ * @param {number} itemsPerPage Number of items per page
  * @returns {JSX.Element} A table displaying the provided data
  */
-const DataTable = ({ data, columns, noResultsMessage, onEdit, onDelete }) => {
+const DataTable = ({ data, columns, noResultsMessage, onEdit, onDelete, currentPage, itemsPerPage }) => {
   // State for storing the sorting (column key and direction)
   const [sortingState, setSortingState] = useState({ key: null, direction: 'asc' });
 
@@ -49,6 +51,15 @@ const DataTable = ({ data, columns, noResultsMessage, onEdit, onDelete }) => {
       return sortingState.direction === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
     });
   }, [data, sortingState]);
+
+  /**
+   * Paginate the sorted data based on the current page and items per page
+   */
+  const paginatedData = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return sortedData.slice(startIndex, endIndex);
+  }, [sortedData, currentPage, itemsPerPage]);
 
   return (
     <div className="mx-auto mt-6 w-full max-w-5xl overflow-x-auto rounded-lg shadow-md">
@@ -95,7 +106,7 @@ const DataTable = ({ data, columns, noResultsMessage, onEdit, onDelete }) => {
           </tr>
         </thead>
         <tbody>
-          {sortedData.length === 0 ? (
+          {paginatedData.length === 0 ? (
             // Use the prop noResultsMessage when no data is found
             <tr>
               <td colSpan={columns.length} className="border p-2 text-center text-gray-500">
@@ -104,7 +115,7 @@ const DataTable = ({ data, columns, noResultsMessage, onEdit, onDelete }) => {
             </tr>
           ) : (
             // Display table rows when data exists with alternating background colors and hover effect
-            sortedData.map((row, rowIndex) => (
+            paginatedData.map((row, rowIndex) => (
               <tr key={rowIndex} className={`hover:bg-gray-200 ${rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}>
                 {columns.map(({ key }) => (
                   <td
@@ -141,6 +152,8 @@ DataTable.propTypes = {
   noResultsMessage: PropTypes.string.isRequired,
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  itemsPerPage: PropTypes.number.isRequired,
 };
 
 export default DataTable;

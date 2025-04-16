@@ -78,13 +78,6 @@ const EmployeeList = () => {
     }
   }, [filteredEmployees.length, totalPages, currentPage]);
 
-  // Paginate the filtered employees
-  const paginatedEmployees = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return filteredEmployees.slice(startIndex, endIndex);
-  }, [filteredEmployees, itemsPerPage, currentPage]);
-
   /**
    * Handle employee editing
    * Convert date fields to ISO format and open the edit modal
@@ -170,11 +163,13 @@ const EmployeeList = () => {
 
         {/* Employee data table */}
         <DataTable
-          data={paginatedEmployees}
+          data={filteredEmployees}
           columns={columns}
           noResultsMessage="No matching records found"
           onEdit={handleEdit}
           onDelete={handleDelete}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
         />
 
         {/* Modal with a pre-filled form to edit the selected employee */}
