@@ -21,3 +21,19 @@ export const formatDateForDisplay = (dateString) => {
     day: '2-digit',
   }).format(date);
 };
+
+/**
+ * Convert a date from 'MM/DD/YYYY' to 'YYYY-MM-DD' (ISO format)
+ * @param {string} date The date string to convert
+ * @returns {string} The formatted date as 'YYYY-MM-DD' or an empty string if invalid
+ */
+export const formatToISO = (date) => {
+  // Check that the input is a non-empty string
+  if (!date || typeof date !== 'string') return '';
+  // Split the date by '/' into month, day, and year
+  const [month, day, year] = date.split('/');
+  // Check if all three parts exist
+  if (!month || !day || !year) return '';
+  // The date is returned in ISO format with zero-padded month and day
+  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+};

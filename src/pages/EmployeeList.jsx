@@ -6,8 +6,10 @@ import DataTable from '../components/DataTable';
 import ItemsPerPageSelect from '../components/ItemsPerPageSelect';
 import Pagination from '../components/Pagination';
 import { mockEmployees } from '../mockData/mockEmployees';
-import { formatDateForDisplay } from '../utils/format';
+import { formatDateForDisplay, formatToISO } from '../utils/format';
 import { useEmployeeStore } from '../store/employeeStore';
+import Modal from '../components/Modal';
+import EmployeeForm from '../components/EmployeeForm';
 
 // Define the columns structure for the DataTable component
 const columns = [
@@ -30,12 +32,15 @@ const EmployeeList = () => {
   const [search, setSearch] = useState('');
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   // Use mock data (true) or real data (false)
   const isUsingMockData = false;
 
   // Load employees from Zustand or use mock data for testing
-  const { employees } = useEmployeeStore();
+  const { employees, deleteEmployee, updateEmployee } = useEmployeeStore();
   const employeeListData = isUsingMockData ? mockEmployees : employees;
 
   // Format the employee dates for display
@@ -80,6 +85,53 @@ const EmployeeList = () => {
     return filteredEmployees.slice(startIndex, endIndex);
   }, [filteredEmployees, itemsPerPage, currentPage]);
 
+  /**
+   * Handle employee editing
+   * Convert date fields to ISO format and open the edit modal
+   * @param {Object} employee The employee to edit
+   */
+  const handleEdit = (employee) => {
+    // Convert 'MM/DD/YYYY' dates to 'YYYY-MM-DD' format for the form
+    const editedEmployee = {
+      ...employee,
+      startDate: employee.startDate && employee.startDate !== 'N/A' ? formatToISO(employee.startDate) : '',
+      dateOfBirth: employee.dateOfBirth && employee.dateOfBirth !== 'N/A' ? formatToISO(employee.dateOfBirth) : '',
+    };
+    setSelectedEmployee(editedEmployee);
+    setIsEditModalOpen(true);
+  };
+
+  /**
+   * Handle deleting an employee
+   * Open the delete confirmation modal
+   * @param {Object} employee The employee to delete
+   */
+  const handleDelete = (employee) => {
+    setSelectedEmployee(employee);
+    setIsDeleteModalOpen(true);
+  };
+
+  /**
+   * Confirm the deletion of the selected employee
+   */
+  const confirmDelete = () => {
+    deleteEmployee(selectedEmployee.id);
+    setIsDeleteModalOpen(false);
+    setSelectedEmployee(null);
+  };
+
+  /**
+   * Save the changes made to an employee
+   * @param {Object} updatedEmployee The updated employee data
+   */
+  const handleSave = (updatedEmployee) => {
+    if (selectedEmployee) {
+      updateEmployee(selectedEmployee.id, updatedEmployee);
+      setSelectedEmployee(null);
+    }
+    setIsEditModalOpen(false);
+  };
+
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-gray-100 px-4 py-8 text-center">
       <h1 className="mb-6 text-4xl font-bold text-[#5A6B40]">Current Employees</h1>
@@ -117,7 +169,75 @@ const EmployeeList = () => {
         </div>
 
         {/* Employee data table */}
-        <DataTable data={paginatedEmployees} columns={columns} noResultsMessage="No matching records found" />
+        <DataTable
+          data={paginatedEmployees}
+          columns={columns}
+          noResultsMessage="No matching records found"
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+
+        {/* Modal with a pre-filled form to edit the selected employee */}
+        {isEditModalOpen && (
+          <Modal
+            title="Edit Employee"
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
+            type="info"
+            showCloseIcon={true}
+            customButton={false}
+            showActionButtons={true}
+            showSaveButton={false} // Disable the Save button
+            showCancelButton={true} // Enable the Cancel button
+            onCancel={() => setIsEditModalOpen(false)}
+          >
+            <div className="max-h-[80vh] overflow-y-auto">
+              {/* Form reused to edit the selected employee */}
+              <EmployeeForm
+                existingEmployee={selectedEmployee}
+                onClose={() => setIsEditModalOpen(false)}
+                onSave={handleSave} // Save function passed to the form
+                showSubmitButton={true}
+              />
+            </div>
+          </Modal>
+        )}
+
+        {/* Modal to delete the selected employee */}
+        {isDeleteModalOpen && (
+          <Modal
+            title="Delete Employee"
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
+            type="warning"
+            // Custom buttons to confirm or cancel deletion
+            customButton={
+              <div className="flex justify-center gap-5">
+                <button
+                  className="cursor-pointer rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+                  onClick={confirmDelete}
+                >
+                  Delete
+                </button>
+                <button
+                  className="cursor-pointer rounded bg-gray-500 px-4 py-2 text-white hover:bg-gray-700"
+                  onClick={() => setIsDeleteModalOpen(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            }
+            message={
+              <>
+                Are you sure you want to delete{' '}
+                <strong className="text-2xl text-black">
+                  {selectedEmployee?.firstName} {selectedEmployee?.lastName}
+                </strong>{' '}
+                ?
+              </>
+            }
+          ></Modal>
+        )}
 
         {/* Pagination to navigate between employee pages */}
         <Pagination

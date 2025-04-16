@@ -9,9 +9,11 @@ import ActionIcons from './ActionIcons';
  * @param {string} columns[].label The column header label
  * @param {string} columns[].key The key corresponding to the data field
  * @param {string} noResultsMessage Message displayed when no data is found
+ * @param {Function} onEdit Function called when editing an employee
+ * @param {Function} onDelete Function called when deleting an employee
  * @returns {JSX.Element} A table displaying the provided data
  */
-const DataTable = ({ data, columns, noResultsMessage }) => {
+const DataTable = ({ data, columns, noResultsMessage, onEdit, onDelete }) => {
   // State for storing the sorting (column key and direction)
   const [sortingState, setSortingState] = useState({ key: null, direction: 'asc' });
 
@@ -117,7 +119,7 @@ const DataTable = ({ data, columns, noResultsMessage }) => {
                 ))}
                 {/* Action icons for each row */}
                 <td className="border border-x-transparent border-y-gray-300 p-2">
-                  <ActionIcons onEdit={() => {}} onDelete={() => {}} />
+                  <ActionIcons onEdit={() => onEdit(row)} onDelete={() => onDelete(row)} />
                 </td>
               </tr>
             ))
@@ -137,6 +139,8 @@ DataTable.propTypes = {
     }),
   ).isRequired,
   noResultsMessage: PropTypes.string.isRequired,
+  onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default DataTable;
