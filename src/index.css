@@ -10,6 +10,13 @@
   }
 }
 
+@layer utilities {
+  /* Gray out days outside the month in the ReactDatePicker calendar */
+  .react-datepicker__days--outside-month {
+    @apply pointer-events-none text-gray-400 opacity-60;
+  }
+}
+
 html,
 body,
 #root {

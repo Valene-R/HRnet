@@ -37,3 +37,24 @@ export const formatToISO = (date) => {
   // The date is returned in ISO format with zero-padded month and day
   return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
 };
+
+/**
+ * Check if a date string is valid and in MM/DD/YYYY format
+ * @param {string} dateStr Date string in MM/DD/YYYY format
+ * @returns {boolean} True if valid, false otherwise
+ */
+export const isValidMMDDYYYY = (dateStr) => {
+  // Check that the string matches the expected pattern strictly (2 digit month/day, 4 digit year)
+  if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateStr)) return false;
+
+  // Extract components and convert them to numbers
+  const [month, day, year] = dateStr.split('/').map(Number);
+
+  // Check month range
+  if (month < 1 || month > 12) return false;
+
+  // Create a date object and verify its components
+  const date = new Date(year, month - 1, day);
+
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+};
