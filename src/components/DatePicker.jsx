@@ -3,6 +3,7 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useState } from 'react';
 import { formatToISO, isValidMMDDYYYY } from '../utils/format';
+import { getMinBirthDate, getMaxBirthDate, getToday, getMinStartDate } from '../utils/dateLimits';
 
 /**
  * Custom DatePicker using react-datepicker
@@ -22,6 +23,12 @@ const DatePicker = ({ label, name, value, onChange }) => {
 
   // Keep track of the current month displayed in the calendar
   const [currentMonth, setCurrentMonth] = useState(new Date());
+
+  // Define the date limits based on the field label
+  // -'Date of Birth': allow a range of dates
+  // -'Start Date': allow only past dates (from a fixed minimum to today)
+  const minDate = label === 'Date of Birth' ? getMinBirthDate() : getMinStartDate();
+  const maxDate = label === 'Date of Birth' ? getMaxBirthDate() : getToday();
 
   /**
    * Handle selection of a date (either from calendar or typed)
@@ -51,12 +58,32 @@ const DatePicker = ({ label, name, value, onChange }) => {
   };
 
   /**
-   * Add a custom class to days outside of the currently shown month to visually gray them out
+   * Add custom class names to days based on their status:
+   * - days outside of the currently displayed month are visually grayed out
+   * - days outside the allowed date range are styled as disabled
    * @param {Date} date The date being rendered in the calendar
-   * @returns {string} class name or empty string
+   * @returns {string} A string of class names to apply
    */
   const getDayClass = (date) => {
-    return date.getMonth() !== currentMonth.getMonth() ? 'react-datepicker__days--outside-month' : '';
+    // Check if the day is outside of the currently displayed month
+    const isOutOfMonth = date.getMonth() !== currentMonth.getMonth();
+
+    // Check if the day is outside of the allowed range
+    const isOutOfRange = date < minDate || date > maxDate;
+
+    let classNames = [];
+
+    // Add native class for days outside the current month
+    if (isOutOfMonth) {
+      classNames.push('react-datepicker__days--outside-month');
+    }
+
+    // Add custom class for days outside the allowed range
+    if (isOutOfRange) {
+      classNames.push('react-datepicker__days--disabled');
+    }
+
+    return classNames.join(' ');
   };
 
   return (
@@ -88,6 +115,8 @@ const DatePicker = ({ label, name, value, onChange }) => {
         dayClassName={getDayClass} // Custom class for days outside the current month
         onMonthChange={(date) => setCurrentMonth(date)} // Update currentMonth when user changes month
         onCalendarOpen={() => setCurrentMonth(parsedDate || new Date())} // Set correct month when calendar opens
+        minDate={minDate}
+        maxDate={maxDate}
         // Custom calendar header with today shortcut (Home icon) and month navigation
         renderCustomHeader={({ date, decreaseMonth, increaseMonth }) => (
           <div className="flex items-center justify-between bg-gray-100 px-2 py-1">

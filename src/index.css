@@ -15,6 +15,11 @@
   .react-datepicker__days--outside-month {
     @apply pointer-events-none text-gray-400 opacity-60;
   }
+
+  /* Disabled days: out of allowed date range */
+  .react-datepicker__days--disabled {
+    @apply cursor-not-allowed bg-red-100 text-red-500 opacity-50;
+  }
 }
 
 html,

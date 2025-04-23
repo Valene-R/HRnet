@@ -8,6 +8,7 @@ import { states } from '../data/states';
 import { departments } from '../data/departments';
 import { capitalizeFirstLetter, normalizeText, normalizeAlphaNumeric, normalizeDigits } from '../utils/normalize';
 import DatePicker from './DatePicker';
+import { getMinBirthDate, getMaxBirthDate, getMinStartDate, getToday } from '../utils/dateLimits';
 
 /**
  * Form for creating or editing an employee
@@ -114,7 +115,18 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
         <Controller
           name="dateOfBirth"
           control={control}
-          rules={{ required: 'Date of Birth is required' }}
+          rules={{
+            required: 'Date of Birth is required',
+            validate: (value) => {
+              const date = new Date(value);
+              const min = getMinBirthDate();
+              const max = getMaxBirthDate();
+              if (date < min || date > max) {
+                return `Date must be between ${min.toLocaleDateString()} and ${max.toLocaleDateString()}`;
+              }
+              return true;
+            },
+          }}
           render={({ field: { value, onChange, name } }) => (
             <DatePicker label="Date of Birth" name={name} value={value} onChange={onChange} />
           )}
@@ -127,7 +139,18 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
         <Controller
           name="startDate"
           control={control}
-          rules={{ required: 'Start Date is required' }}
+          rules={{
+            required: 'Start Date is required',
+            validate: (value) => {
+              const date = new Date(value);
+              const min = getMinStartDate();
+              const max = getToday();
+              if (date < min || date > max) {
+                return `Start date must be between ${min.toLocaleDateString()} and ${max.toLocaleDateString()}`;
+              }
+              return true;
+            },
+          }}
           render={({ field: { value, onChange, name } }) => (
             <DatePicker label="Start Date" name={name} value={value} onChange={onChange} />
           )}
