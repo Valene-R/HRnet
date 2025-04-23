@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import InputField from '../components/InputField';
-import DropdownSelect from '../components/DropdownSelect';
-import ErrorMessage from '../components/ErrorMessage';
+import InputField from './InputField';
+import DropdownSelect from './DropdownSelect';
+import ErrorMessage from './ErrorMessage';
 import { states } from '../data/states';
 import { departments } from '../data/departments';
 import { capitalizeFirstLetter, normalizeText, normalizeAlphaNumeric, normalizeDigits } from '../utils/normalize';
+import DatePicker from './DatePicker';
 
 /**
  * Form for creating or editing an employee
@@ -50,7 +51,11 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
     }
   }, [existingEmployee, onReset, reset]);
 
-  // Handle form submission: save data and optionally close modal
+  /**
+   * Handle form submission
+   * Call `onSave` with the form data, and optionally `onClose` if in edit mode
+   * @param {Object} data Form data
+   */
   const onSubmit = (data) => {
     if (onSave) {
       onSave(data);
@@ -110,7 +115,9 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
           name="dateOfBirth"
           control={control}
           rules={{ required: 'Date of Birth is required' }}
-          render={({ field }) => <InputField label="Date of Birth" type="date" {...field} />}
+          render={({ field: { value, onChange, name } }) => (
+            <DatePicker label="Date of Birth" name={name} value={value} onChange={onChange} />
+          )}
         />
         <ErrorMessage message={errors.dateOfBirth?.message} />
       </div>
@@ -121,7 +128,9 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
           name="startDate"
           control={control}
           rules={{ required: 'Start Date is required' }}
-          render={({ field }) => <InputField label="Start Date" type="date" {...field} />}
+          render={({ field: { value, onChange, name } }) => (
+            <DatePicker label="Start Date" name={name} value={value} onChange={onChange} />
+          )}
         />
         <ErrorMessage message={errors.startDate?.message} />
       </div>
