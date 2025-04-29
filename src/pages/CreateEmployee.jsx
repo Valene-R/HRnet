@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../router/routes';
-import Modal from '../components/Modal';
+import Modal from 'react-custom-modal-tailwindv4';
 import { useEmployeeStore } from '../store/employeeStore';
 import EmployeeForm from '../components/EmployeeForm';
 

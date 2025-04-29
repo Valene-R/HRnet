@@ -8,7 +8,7 @@ import Pagination from '../components/Pagination';
 import { mockEmployees } from '../mockData/mockEmployees';
 import { formatDateForDisplay, formatToISO } from '../utils/format';
 import { useEmployeeStore } from '../store/employeeStore';
-import Modal from '../components/Modal';
+import Modal from 'react-custom-modal-tailwindv4';
 import EmployeeForm from '../components/EmployeeForm';
 
 // Define the columns structure for the DataTable component
