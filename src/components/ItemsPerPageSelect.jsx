@@ -15,7 +15,7 @@ const ItemsPerPageSelect = ({ value, onChange, options, labelBefore, labelAfter 
     <div className="mb-4 flex items-center">
       {labelBefore && <label className="mr-2">{labelBefore}</label>}
       <select
-        className="cursor-pointer rounded border p-2"
+        className="cursor-pointer rounded border p-2 focus:ring-1 focus:ring-black focus:outline-none"
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       >

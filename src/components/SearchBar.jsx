@@ -8,11 +8,11 @@ import PropTypes from 'prop-types';
  */
 const SearchBar = ({ value, onChange }) => {
   return (
-    <div className="relative mb-4 flex items-center justify-end focus:ring-1 focus:ring-black focus:outline-none">
+    <div className="relative mb-4 flex items-center justify-end">
       <input
         type="text"
         placeholder="Search..."
-        className="rounded border p-2"
+        className="rounded border p-2 focus:ring-1 focus:ring-black focus:outline-none"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
