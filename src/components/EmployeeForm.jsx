@@ -9,6 +9,7 @@ import { departments } from '../data/departments';
 import { capitalizeFirstLetter, normalizeText, normalizeAlphaNumeric, normalizeDigits } from '../utils/normalize';
 import DatePicker from './DatePicker';
 import { getMinBirthDate, getMaxBirthDate, getMinStartDate, getToday } from '../utils/dateLimits';
+import { formatDateForDisplay } from '../utils/format';
 
 /**
  * Form for creating or editing an employee
@@ -122,7 +123,7 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
               const min = getMinBirthDate();
               const max = getMaxBirthDate();
               if (date < min || date > max) {
-                return `Date must be between ${min.toLocaleDateString()} and ${max.toLocaleDateString()}`;
+                return `Date must be between ${formatDateForDisplay(min.toISOString().slice(0, 10))} and ${formatDateForDisplay(max.toISOString().slice(0, 10))}`;
               }
               return true;
             },
@@ -146,7 +147,7 @@ const EmployeeForm = ({ existingEmployee, onClose, onSave, onReset, showSubmitBu
               const min = getMinStartDate();
               const max = getToday();
               if (date < min || date > max) {
-                return `Start date must be between ${min.toLocaleDateString()} and ${max.toLocaleDateString()}`;
+                return `Start date must be between ${formatDateForDisplay(min.toISOString().slice(0, 10))} and ${formatDateForDisplay(max.toISOString().slice(0, 10))}`;
               }
               return true;
             },
