@@ -6,11 +6,7 @@ import Router from './router/Router';
  * @returns {JSX.Element} The main application component
  */
 function App() {
-  return (
-    <>
-      <Router />
-    </>
-  );
+  return <Router />;
 }
 
 export default App;

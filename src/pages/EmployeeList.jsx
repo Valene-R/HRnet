@@ -1,6 +1,4 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { ROUTES } from '../router/routes';
 import SearchBar from '../components/SearchBar';
 import DataTable from '../components/DataTable';
 import ItemsPerPageSelect from '../components/ItemsPerPageSelect';
@@ -127,25 +125,6 @@ const EmployeeList = () => {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center bg-gray-100 px-4 py-8 text-center">
-      <h1 className="mb-6 text-4xl font-bold text-[#5A6B40]">Current Employees</h1>
-
-      <div className="flex gap-x-7">
-        {/* Link back to home */}
-        <Link
-          to={ROUTES.home}
-          className="mb-6 cursor-pointer text-lg text-[#779432] underline transition-transform hover:scale-105 hover:text-[#485330]"
-        >
-          Home
-        </Link>
-        {/* Link back to form employee creation */}
-        <Link
-          to={ROUTES.createEmployee}
-          className="mb-6 cursor-pointer text-lg text-[#779432] underline transition-transform hover:scale-105 hover:text-[#485330]"
-        >
-          Create employee
-        </Link>
-      </div>
-
       <div className="w-full max-w-5xl">
         <div className="mb-6 flex w-full max-w-5xl flex-col items-center justify-between gap-x-4 xl:flex-row">
           {/* Dropdown to select the number of displayed entries */}
