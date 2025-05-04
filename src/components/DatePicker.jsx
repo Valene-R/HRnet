@@ -147,7 +147,7 @@ const DatePicker = ({ label, name, value, onChange }) => {
 
               {/* Display current month and year */}
               <span>
-                {date.toLocaleString('default', { month: 'long' })} {date.getFullYear()}
+                {date.toLocaleString('en-US', { month: 'long' })} {date.getFullYear()}
               </span>
 
               {/* Next month arrow */}
