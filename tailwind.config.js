@@ -67,6 +67,9 @@ export default {
     'focus:ring-1',
     'focus:ring-black',
     'focus:outline-none',
+
+    // Accessibility - screen reader only
+    'sr-only',
   ],
   theme: {
     extend: {},
