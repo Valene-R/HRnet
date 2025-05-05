@@ -3,11 +3,11 @@ import SearchBar from '../components/SearchBar';
 import DataTable from '../components/DataTable';
 import ItemsPerPageSelect from '../components/ItemsPerPageSelect';
 import Pagination from '../components/Pagination';
-import { mockEmployees } from '../mockData/mockEmployees';
 import { formatDateForDisplay, formatToISO } from '../utils/format';
 import { useEmployeeStore } from '../store/employeeStore';
 import Modal from 'react-custom-modal-tailwindv4';
 import EmployeeForm from '../components/EmployeeForm';
+import { getEmployeeList } from '../services/employeeData';
 
 // Define the columns structure for the DataTable component
 const columns = [
@@ -34,12 +34,10 @@ const EmployeeList = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
 
-  // Use mock data (true) or real data (false)
-  const isUsingMockData = false;
-
-  // Load employees from Zustand or use mock data for testing
-  const { employees, deleteEmployee, updateEmployee } = useEmployeeStore();
-  const employeeListData = isUsingMockData ? mockEmployees : employees;
+  // Extract the necessary actions from the Zustand store
+  const { deleteEmployee, updateEmployee } = useEmployeeStore();
+  // Get the employee list from the dedicated service (mock or real data depending on the config)
+  const employeeListData = getEmployeeList();
 
   // Format the employee dates for display
   const formattedEmployees = useMemo(() => {
